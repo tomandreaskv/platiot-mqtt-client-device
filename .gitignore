@@ -47,6 +47,7 @@
 .gcc-flags.json
 .pio
 
-.env
+src/secrets.h
+
 
 # End of https://www.toptal.com/developers/gitignore/api/platformio,c++

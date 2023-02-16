@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
-
-#define WIFI_SSID "your SSID"
-#define WIFI_PASSWORD "your password"
+#include <secrets.h>
 
 void setup() {
   // put your setup code here, to run once:
