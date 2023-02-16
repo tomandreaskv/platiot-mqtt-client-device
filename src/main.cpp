@@ -58,7 +58,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
 
   // Switch on the LED if an 1 was received as first character
-  if (String(topic) == "esp32/output") {
+  if (String(topic) == MQTT_SUB_TOPIC_2) {
     Serial.print("Changing output to ");
     if (messageTemp == "Red") {
       turn_led_red();
@@ -92,6 +92,10 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(LED_BUILTIN, OUTPUT);
+
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
 
   setup_wifi();
   setup_mqtt();
@@ -127,12 +131,13 @@ void reconnect_mqtt() {
     String clientId = "ESP32Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
-    if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) {
+    //if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) {
+     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("esp32/output", "hello world");
+      client.publish(MQTT_PUB_TOPIC_1, "hello world");
       // ... and resubscribe
-      client.subscribe("esp32/output");
+      client.subscribe(MQTT_SUB_TOPIC_2);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -152,6 +157,7 @@ void loop() {
 
    client.loop();
 
-   client.publish("esp32/ledstatus", ledColor);
+   client.publish(MQTT_PUB_TOPIC_2, ledColor);
+   delay(5000);
 
 }
